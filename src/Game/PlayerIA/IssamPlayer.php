@@ -1,22 +1,39 @@
 <?php
-
 namespace Hackathon\PlayerIA;
-
 use Hackathon\Game\Result;
-
 /**
- * Class Neosia67Player
+ * Class LovePlayer
  * @package Hackathon\PlayerIA
- * @author Antoine Legrand
+ * @author Meshufr
  */
-class PacificateurPlayer extends Player
+class IssamPlayer extends Player
 {
     protected $mySide;
     protected $opponentSide;
     protected $result;
-
+    public function mirrorFoe()
+    {
+      $opponentActions = $this->result->getChoicesFor($this->opponentSide);
+      $opponentLastAction = $this->result->getLastChoiceFor($this->opponentSide);
+      if (!$opponentLastAction)
+        return parent::foeChoice();
+      return $opponentLastAction;
+    }
+    public function bastardMove()
+    {
+      $roundNb = $this->result->getNbRound();
+      $opponentStats = $this->result->getStatsFor($this->opponentSide);
+      if ($opponentStats['foe'] == $this->result->getNbRound() && $this->result->getNbRound())
+      {
+        return parent::foeChoice();
+      }
+      else if ($roundNb > 8 || $this->result->getLastChoiceFor($this->opponentSide))
+        return parent::foeChoice();
+      return parent::friendChoice();
+    }
     public function getChoice()
     {
+        return $this->bastardMove();
         // -------------------------------------    -----------------------------------------------------
         // How to get my Last Choice           ?    $this->result->getLastChoiceFor($this->mySide) -- if 0 (first round)
         // How to get the opponent Last Choice ?    $this->result->getLastChoiceFor($this->opponentSide) -- if 0 (first round)
@@ -40,15 +57,6 @@ class PacificateurPlayer extends Player
         // -------------------------------------    -----------------------------------------------------
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
-        $rd = $this->result->getNbRound();
-        if ($rd > 1)
-        {
-            $op_ch = $this->result->getChoicesFor($this->opponentSide);
-            $last = $op_ch[$rd - 1];
-            $two = $op_ch[$rd - 2];
-            if ($last == parent::foeChoice() && $two == parent::foeChoice())
-                return parent::foeChoice();
-        }
-        return parent::friendChoice();
     }
+ 
 };

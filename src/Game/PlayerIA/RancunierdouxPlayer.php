@@ -9,7 +9,7 @@ use Hackathon\Game\Result;
  * @package Hackathon\PlayerIA
  * @author Antoine Legrand
  */
-class PacificateurPlayer extends Player
+class RancunierdouxPlayer extends Player
 {
     protected $mySide;
     protected $opponentSide;
@@ -40,15 +40,21 @@ class PacificateurPlayer extends Player
         // -------------------------------------    -----------------------------------------------------
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
+        
+        if ($this->result->getNbRound() == 0)
+            return parent::friendChoice();
+
         $rd = $this->result->getNbRound();
-        if ($rd > 1)
-        {
+        if ($rd > 1){
             $op_ch = $this->result->getChoicesFor($this->opponentSide);
             $last = $op_ch[$rd - 1];
             $two = $op_ch[$rd - 2];
-            if ($last == parent::foeChoice() && $two == parent::foeChoice())
+            if ($last == parent::foeChoice() && $two == parent::friendChoice())
                 return parent::foeChoice();
         }
+        
+        if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
+            return parent::foeChoice();
         return parent::friendChoice();
     }
 };
