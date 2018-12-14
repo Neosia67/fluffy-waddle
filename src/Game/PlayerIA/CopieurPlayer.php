@@ -43,7 +43,7 @@ class CopieurPlayer extends Player
  
 
         if ($this->result->getNbRound() == 0)
-            return parent::foeChoice();
+            return parent::friendChoice();
         return $this->result->getLastChoiceFor($this->opponentSide);
     }
  
