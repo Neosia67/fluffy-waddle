@@ -17,35 +17,48 @@ class Neosia67Player extends Player
 
     public function getChoice()
     {
-        $turnnum = $this->result->getNbRound();
+        $rd = $this->result->getNbRound();
         $opp_name = $this->result->getStatsFor($this->opponentSide)['name'];
 
-        // Gang du T9, les seuls, les vrais.
+        // Gang du T99, les seuls, les vrais.
         $gangDuT99 = array("Mattiashell", "Santost", "Paultato", "Vcollette");
+        // On merite pas leur travail
+        $ennemis = array('Akatsuki95', 'Vegan60');
         
         // Technique ancestrale du T99
-        if ($turnnum === 99) {
+        if ($rd === 99) {
             // On sauce les freres, TMTC
             if (in_array($opp_name, $gangDuT99))
                 return parent::friendChoice();
             // Les autres on les tape
             return parent::foeChoice();
         }
+
+        // Pour evacuer sa frustration
+        if (in_array($opp_name, $ennemis))
+            return parent::foeChoice();
+
         // Le premier tour
-        if ($this->result->getNbRound() == 0)
+        if ($rd == 0)
             return parent::friendChoice();
 
-        $rd = $this->result->getNbRound();
+        $op_stats = $this->result->getStatsFor($this->opponentSide);
+
+        // Oeil pour oeil
+        if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
+            return parent::foeChoice();
+
         if ($rd > 1){
-            $op_ch = $this->result->getChoicesFor($this->opponentSide);
+            // Recup des 2 derniers tours
+            $op_ch = $this->result->getChoicesFor($this->mySide);
             $last = $op_ch[$rd - 1];
             $two = $op_ch[$rd - 2];
+            // Je lui mets une double couche pour marquer le coup
             if ($last == parent::foeChoice() && $two == parent::friendChoice())
                 return parent::foeChoice();
         }
         
-        if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
-            return parent::foeChoice();
+        // Faut bien être gentil de temps en temps 
         return parent::friendChoice();
     }
  

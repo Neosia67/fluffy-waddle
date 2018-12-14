@@ -21,15 +21,16 @@ class IssamPlayer extends Player
     }
     public function bastardMove()
     {
+      $result = parent::foeChoice();
       $roundNb = $this->result->getNbRound();
       $opponentStats = $this->result->getStatsFor($this->opponentSide);
-      if ($opponentStats['foe'] == $this->result->getNbRound() && $this->result->getNbRound())
-      {
-        return parent::foeChoice();
-      }
-      else if ($roundNb > 8 || $this->result->getLastChoiceFor($this->opponentSide))
-        return parent::foeChoice();
-      return parent::friendChoice();
+      if ($opponentStats['foe'] == $roundNb && $roundNb)
+        $result = parent::foeChoice();
+      else if ($roundNb > 98)
+        $result = parent::foeChoice();
+      else if ($opponentStats['foe'] < 3)
+        $result = parent::friendChoice();
+      return $result;
     }
     public function getChoice()
     {
