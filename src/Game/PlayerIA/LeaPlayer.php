@@ -9,7 +9,7 @@ use Hackathon\Game\Result;
  * @package Hackathon\PlayerIA
  * @author Antoine Legrand
  */
-class Neosia67Player extends Player
+class LeaPlayer extends Player
 {
     protected $mySide;
     protected $opponentSide;
@@ -41,26 +41,10 @@ class Neosia67Player extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
  
-        $turnnum = $this->result->getNbRound();
-        $opp_name = $this->result->getStatsFor($this->opponentSide)['name'];
-
-        // Gang du T9.
-        $gangDuT9 = array("Mattiashell", "Santost", "Paultato", "Vcollette");
-        
-        // Technique ancestrale du T9
-        if ($turnnum === 9) {
-            // Gentil avec la confrérie des T9
-            if (in_array($opp_name, $gangDuT9))
-                return parent::friendChoice();
+        if($this->result->getLastScoreFor($this->opponentSide) > $this->result->getLastScoreFor($this->mySide))
             return parent::foeChoice();
-        }
-        if ($this->result->getNbRound() == 0)
-            return parent::friendChoice();
-        if ($this->result->getLastChoiceFor($this->mySide) == parent::foeChoice())
-            return parent::foeChoice();
-        if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
-            return parent::foeChoice();
-        return parent::friendChoice();
+        if (!$this->result->getLastChoiceFor($this->opponentSide))
+            return parent::friendChoice(); 
+        return parent::foeChoice();
     }
- 
 };
