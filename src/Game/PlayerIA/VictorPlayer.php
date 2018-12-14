@@ -9,7 +9,7 @@ use Hackathon\Game\Result;
  * @package Hackathon\PlayerIA
  * @author Antoine Legrand
  */
-class Neosia67Player extends Player
+class VictorPlayer extends Player
 {
     protected $mySide;
     protected $opponentSide;
@@ -41,16 +41,10 @@ class Neosia67Player extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
  
-        if ($this->result->getNbRound() == 9)
+        $num_foe_op = $this->result->getStatsFor($this->opponentSide)['foe'];
+            $num_foe_me = $this->result->getStatsFor($this->mySide)['foe'];
+            if ($num_foe_me >= $num_foe_op)
+                return parent::friendChoice();
             return parent::foeChoice();
-
-        if ($this->result->getNbRound() == 0)
-            return parent::friendChoice();
-        if ($this->result->getLastChoiceFor($this->mySide) == parent::foeChoice())
-            return parent::foeChoice();
-        if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
-            return parent::foeChoice();
-        return parent::friendChoice();
     }
- 
 };
