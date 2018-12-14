@@ -11,6 +11,7 @@ class IssamPlayer extends Player
     protected $mySide;
     protected $opponentSide;
     protected $result;
+    private $maxRound = 99;
     public function mirrorFoe()
     {
       $opponentActions = $this->result->getChoicesFor($this->opponentSide);
@@ -26,9 +27,9 @@ class IssamPlayer extends Player
       $opponentStats = $this->result->getStatsFor($this->opponentSide);
       if ($opponentStats['foe'] == $roundNb && $roundNb)
         $result = parent::foeChoice();
-      else if ($roundNb > 98)
+      else if ($roundNb > $this->maxRound - 1)
         $result = parent::foeChoice();
-      else if ($opponentStats['foe'] < 3)
+      else if ($opponentStats['foe'] < 3 || $opponentStats['foe'] < $roundNb / 3)
         $result = parent::friendChoice();
       return $result;
     }

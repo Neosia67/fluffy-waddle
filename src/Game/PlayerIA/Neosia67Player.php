@@ -42,8 +42,6 @@ class Neosia67Player extends Player
         if ($rd == 0)
             return parent::friendChoice();
 
-        $op_stats = $this->result->getStatsFor($this->opponentSide);
-
         // Oeil pour oeil
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
             return parent::foeChoice();
